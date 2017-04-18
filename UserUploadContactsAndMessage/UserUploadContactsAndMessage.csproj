@@ -201,6 +201,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\Globals.cs" />
     <Compile Include="Models\UserDetail.cs" />
     <Compile Include="Models\UserDetailViewModel.cs" />
     <Compile Include="Models\UserUploadContactsAndMessageDb.cs" />

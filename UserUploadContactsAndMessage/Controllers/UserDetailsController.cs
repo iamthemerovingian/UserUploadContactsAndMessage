@@ -36,6 +36,7 @@ namespace UserUploadContactsAndMessage.Controllers
             //{
             //    return HttpNotFound();
             //}
+            Globals.Message = "Your message has been discarded";
             return View(details);
         }
 
@@ -47,9 +48,10 @@ namespace UserUploadContactsAndMessage.Controllers
             {
                 _db.UserDetails.Add(details);
                 _db.SaveChanges();
-                ViewBag.Message = $"Your message: {details.Message} has been successfully saved!";
+                Globals.Message = $"Your message: {details.Message} has been successfully saved!";
                 return RedirectToAction("Create");
             }
+
             return RedirectToAction("Confirm");
         }
 
@@ -62,7 +64,7 @@ namespace UserUploadContactsAndMessage.Controllers
             //                     select u).FirstOrDefault();
 
             // return View(lastUserEntry);
-            ViewBag.Message = "Your details have been discarded.";
+            ViewBag.Message = Globals.Message;
             UserDetail user = new UserDetail(){ SendDateTime = DateTime.Now };
             return View(user);
         }
