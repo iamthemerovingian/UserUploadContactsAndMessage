@@ -12,12 +12,12 @@ namespace UserUploadContactsAndMessage.Controllers
 {
     public class UserDetailsController : Controller
     {
-        private UserUploadContactsAndMessageDb db = new UserUploadContactsAndMessageDb();
+        private UserUploadContactsAndMessageDb _db = new UserUploadContactsAndMessageDb();
 
         // GET: UserDetails
         public ActionResult Index()
         {
-            return View(db.UserDetails.ToList());
+            return View(_db.UserDetails.ToList());
         }
 
         // GET: UserDetails/Details/5
@@ -27,7 +27,7 @@ namespace UserUploadContactsAndMessage.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserDetail userDetail = db.UserDetails.Find(id);
+            UserDetail userDetail = _db.UserDetails.Find(id);
             if (userDetail == null)
             {
                 return HttpNotFound();
@@ -36,8 +36,15 @@ namespace UserUploadContactsAndMessage.Controllers
         }
 
         // GET: UserDetails/Create
+        [HttpGet]
         public ActionResult Create()
         {
+            //var lastUserEntry = (from u in _db.UserDetails
+            //                     orderby u.Id descending
+            //                     select u).FirstOrDefault();
+
+            // return View(lastUserEntry);
+             
             return View();
         }
 
@@ -52,11 +59,10 @@ namespace UserUploadContactsAndMessage.Controllers
 
             if (ModelState.IsValid)
             {
-                db.UserDetails.Add(userDetail);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                _db.UserDetails.Add(userDetail);
+                _db.SaveChanges();
+                return RedirectToAction("Create");
             }
-
             return View(userDetail);
         }
 
@@ -67,7 +73,7 @@ namespace UserUploadContactsAndMessage.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserDetail userDetail = db.UserDetails.Find(id);
+            UserDetail userDetail = _db.UserDetails.Find(id);
             if (userDetail == null)
             {
                 return HttpNotFound();
@@ -84,8 +90,8 @@ namespace UserUploadContactsAndMessage.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(userDetail).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(userDetail).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(userDetail);
@@ -98,7 +104,7 @@ namespace UserUploadContactsAndMessage.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserDetail userDetail = db.UserDetails.Find(id);
+            UserDetail userDetail = _db.UserDetails.Find(id);
             if (userDetail == null)
             {
                 return HttpNotFound();
@@ -111,9 +117,9 @@ namespace UserUploadContactsAndMessage.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            UserDetail userDetail = db.UserDetails.Find(id);
-            db.UserDetails.Remove(userDetail);
-            db.SaveChanges();
+            UserDetail userDetail = _db.UserDetails.Find(id);
+            _db.UserDetails.Remove(userDetail);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -121,7 +127,7 @@ namespace UserUploadContactsAndMessage.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
