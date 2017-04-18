@@ -59,7 +59,7 @@ namespace UserUploadContactsAndMessage.Controllers
             //                     select u).FirstOrDefault();
 
             // return View(lastUserEntry);
-            UserDetail user = new UserDetail(){ SendDateTime = DateTime.Now };
+            UserDetailViewModel user = new UserDetailViewModel(){ SendDateTime = DateTime.Now };
             return View(user);
         }
 
@@ -68,15 +68,15 @@ namespace UserUploadContactsAndMessage.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Message,Contacts")] UserDetail userDetail)
+        public ActionResult Create([Bind(Include = "Id,Name,Message,Contacts")] UserDetailViewModel userDetailVM)
         {
             try
             {
-                userDetail.SendDateTime = DateTime.Now;
+                userDetailVM.user.SendDateTime = DateTime.Now;
 
                 if (ModelState.IsValid)
                 {
-                    return RedirectToAction("Confirm", userDetail);
+                    return RedirectToAction("Confirm", userDetailVM.user);
                 }
             }
             catch (Exception e )
@@ -84,7 +84,7 @@ namespace UserUploadContactsAndMessage.Controllers
                 Console.WriteLine(e.Message);
             }
             
-            return View(userDetail);
+            return View(userDetailVM);
         }
 
         protected override void Dispose(bool disposing)
