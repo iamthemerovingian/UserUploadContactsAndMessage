@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -44,8 +45,8 @@ namespace UserUploadContactsAndMessage.Controllers
             //                     select u).FirstOrDefault();
 
             // return View(lastUserEntry);
-             
-            return View();
+            UserDetail user = new UserDetail(){ SendDateTime = DateTime.Now };
+            return View(user);
         }
 
         // POST: UserDetails/Create
@@ -53,72 +54,25 @@ namespace UserUploadContactsAndMessage.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Message,Contacts,SendDateTime")] UserDetail userDetail)
+        public ActionResult Create([Bind(Include = "Id,Name,Message,Contacts")] UserDetail userDetail)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _db.UserDetails.Add(userDetail);
-                _db.SaveChanges();
-                return RedirectToAction("Create");
-            }
-            return View(userDetail);
-        }
+                userDetail.SendDateTime = DateTime.Now;
 
-        // GET: UserDetails/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (ModelState.IsValid)
+                {
+                    _db.UserDetails.Add(userDetail);
+                    _db.SaveChanges();
+                    return RedirectToAction("Create");
+                }
             }
-            UserDetail userDetail = _db.UserDetails.Find(id);
-            if (userDetail == null)
+            catch (Exception e )
             {
-                return HttpNotFound();
+                Console.WriteLine(e.Message);
             }
+            
             return View(userDetail);
-        }
-
-        // POST: UserDetails/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Message,Contacts,SendDateTime")] UserDetail userDetail)
-        {
-            if (ModelState.IsValid)
-            {
-                _db.Entry(userDetail).State = EntityState.Modified;
-                _db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(userDetail);
-        }
-
-        // GET: UserDetails/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            UserDetail userDetail = _db.UserDetails.Find(id);
-            if (userDetail == null)
-            {
-                return HttpNotFound();
-            }
-            return View(userDetail);
-        }
-
-        // POST: UserDetails/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            UserDetail userDetail = _db.UserDetails.Find(id);
-            _db.UserDetails.Remove(userDetail);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

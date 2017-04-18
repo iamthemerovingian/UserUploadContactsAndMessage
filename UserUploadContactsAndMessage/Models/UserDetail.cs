@@ -7,16 +7,49 @@ using UserUploadContactsAndMessage.ValidationAttributes;
 
 namespace UserUploadContactsAndMessage.Models
 {
-    public class UserDetail 
+    public class UserDetail :IValidatableObject
     {
+        private UserUploadContactsAndMessageDb _db = new UserUploadContactsAndMessageDb();
         public int Id { get; set; }
-        public string Name { get; set; }
-        [StringLength(maximumLength:160, MinimumLength = 20)]
-        public string Message { get; set; }
-        //Added to prevent Overloadig the database with CSV files.
+
         [Required]
+        [StringLength(maximumLength: 160, MinimumLength = 2)]
+        public string Name { get; set; }
+
+        [Required]
+        [StringLength(maximumLength:160, MinimumLength = 20)]
+        [NoIllegalCharacters]
+        public string Message { get; set; }
+
+        //Added to prevent Overloadig the database with CSV files.
+        //[Required]
         [MaxByteArray(maximumSize:1024, minimumSize: 20)]
         public byte[] Contacts { get; set; }
+
         public DateTime SendDateTime { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            //DateTime sendDateTime = (DateTime)validationContext.Items["SendDateTime"];
+            //string message = (string)validationContext.Items["Message"];
+
+            var lastUserEntry = (from u in _db.UserDetails
+                                 orderby u.Id descending
+                                 select u).FirstOrDefault();
+
+            if (SendDateTime != DateTime.MinValue && Message != null)
+            {
+                if (lastUserEntry.Message.ToLower().Equals(Message.ToLower()))
+                {
+                    if (lastUserEntry.SendDateTime > SendDateTime.AddHours(-24) && lastUserEntry.SendDateTime <= SendDateTime)
+                    {
+                        yield return new ValidationResult("Sorry, you can't insert the same message twice in 24h hours!");
+                    }
+                }
+            }
+
+
+
+        }
     }
 }
