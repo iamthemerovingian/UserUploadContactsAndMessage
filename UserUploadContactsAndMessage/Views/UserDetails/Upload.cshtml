@@ -1,10 +1,10 @@
 ﻿@model UserUploadContactsAndMessage.Models.UserDetail
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Upload";
 }
 
-<h2>Details</h2>
+<h2>Upload</h2>
 
 <div>
     <h4>UserDetail</h4>
@@ -44,15 +44,7 @@
 
     </dl>
 </div>
-
 <p>
-    @Html.ActionLink("Cancel", "Create") |
-    @Html.ActionLink("Confirm and Save", "Upload", Model)
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
 </p>
-    @*<div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Cancel" class="btn btn-default" />
-            <input type="submit" value="Save" class="btn btn-default" />
-        </div>
-    </div>*@
-

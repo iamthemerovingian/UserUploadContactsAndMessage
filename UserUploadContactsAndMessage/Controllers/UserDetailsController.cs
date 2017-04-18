@@ -23,7 +23,7 @@ namespace UserUploadContactsAndMessage.Controllers
             return View("Create", details);
         }
 
-        // GET: UserDetails/Details/5
+        //// GET: UserDetails/Details/5
         [HttpGet]
         public ActionResult Confirm(UserDetail details)
         {
@@ -38,16 +38,19 @@ namespace UserUploadContactsAndMessage.Controllers
             //}
             return View(details);
         }
-        [HttpPost]
-        public ActionResult Confirm(UserDetail details, bool confirmed)
+
+        
+        public ActionResult Upload(UserDetail details)
         {
-            if (confirmed)
+            //if (confirmed != null && confirmed == true)
+            if(ModelState.IsValid)
             {
                 _db.UserDetails.Add(details);
                 _db.SaveChanges();
+                ViewBag.Message = $"Your message: {details.Message} has been successfully saved!";
                 return RedirectToAction("Create");
             }
-            return View(details);
+            return RedirectToAction("Confirm");
         }
 
         // GET: UserDetails/Create
@@ -59,6 +62,7 @@ namespace UserUploadContactsAndMessage.Controllers
             //                     select u).FirstOrDefault();
 
             // return View(lastUserEntry);
+            ViewBag.Message = "Your details have been discarded.";
             UserDetail user = new UserDetail(){ SendDateTime = DateTime.Now };
             return View(user);
         }
