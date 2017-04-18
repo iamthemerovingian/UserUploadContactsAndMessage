@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using UserUploadContactsAndMessage.Models;
@@ -14,6 +15,7 @@ namespace UserUploadContactsAndMessage.Controllers
     public class UserDetailsController : Controller
     {
         private UserUploadContactsAndMessageDb _db = new UserUploadContactsAndMessageDb();
+        private File userFile = new File();
 
         // GET: UserDetails
         public ActionResult Index(UserDetail userDetails)
@@ -44,7 +46,9 @@ namespace UserUploadContactsAndMessage.Controllers
         public ActionResult Upload(UserDetail details)
         {
             //if (confirmed != null && confirmed == true)
-            if(ModelState.IsValid)
+
+            details.Contacts = Globals.ContactsData;
+            if (ModelState.IsValid)
             {
                 _db.UserDetails.Add(details);
                 _db.SaveChanges();
@@ -74,7 +78,7 @@ namespace UserUploadContactsAndMessage.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Message,Contacts")] UserDetail userDetail)
+        public ActionResult Create([Bind(Include = "Id,Name,Message,Contacts")] UserDetail userDetail, HttpPostedFileBase upload)
         {
             try
             {
@@ -82,6 +86,13 @@ namespace UserUploadContactsAndMessage.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    userDetail.FileName = upload.FileName;
+                    userDetail.FileDetails = upload;
+                    userFile.ToByteArray(userDetail.FileDetails);
+                    //userDetail.File = userFile;
+                    //userDetail.Contacts = userFile.bytes;
+                    //userDetail.ContactsString = Encoding.ASCII.GetString(userFile.bytes);
+
                     return RedirectToAction("Confirm", userDetail);
                 }
             }

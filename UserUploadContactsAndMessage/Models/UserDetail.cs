@@ -28,6 +28,15 @@ namespace UserUploadContactsAndMessage.Models
 
         public DateTime SendDateTime { get; set; }
 
+        [StringLength(maximumLength: 160, MinimumLength = 5)]
+        public string FileName { get; set; }
+        internal HttpPostedFileBase FileDetails { get; set; }
+        internal File File { get; set; }
+        public string ContactsString { get; set; }
+
+        //[Required, FileExtensions(Extensions = "csv", ErrorMessage = "Specify a CSV file. (Comma-separated values)")]
+        //public HttpPostedFileBase File { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             //DateTime sendDateTime = (DateTime)validationContext.Items["SendDateTime"];
@@ -37,7 +46,7 @@ namespace UserUploadContactsAndMessage.Models
                                  orderby u.Id descending
                                  select u).FirstOrDefault();
 
-            if (SendDateTime != DateTime.MinValue && Message != null)
+            if (SendDateTime != DateTime.MinValue && Message != null && lastUserEntry != null)
             {
                 if (lastUserEntry.Message.ToLower().Equals(Message.ToLower()))
                 {
@@ -47,9 +56,6 @@ namespace UserUploadContactsAndMessage.Models
                     }
                 }
             }
-
-
-
         }
     }
 }
