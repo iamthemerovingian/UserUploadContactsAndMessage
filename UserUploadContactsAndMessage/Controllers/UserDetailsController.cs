@@ -16,15 +16,7 @@ namespace UserUploadContactsAndMessage.Controllers
     {
         private UserUploadContactsAndMessageDb _db = new UserUploadContactsAndMessageDb();
         private File userFile = new File();
-
-        // GET: UserDetails
-        public ActionResult Index(UserDetail userDetails)
-        {
-            var details = _db.UserDetails.Where(row => row.Name ==userDetails.Name && row.SendDateTime.Equals(userDetails.SendDateTime)).FirstOrDefault();
-
-            return View("Create", details);
-        }
-
+      
         //// GET: UserDetails/Details/5
         [HttpGet]
         public ActionResult Confirm(UserDetail details)

@@ -14,6 +14,7 @@ namespace UserUploadContactsAndMessage.Models
 
         [Required]
         [StringLength(maximumLength: 160, MinimumLength = 2)]
+        [Display(Name = "User Name")]
         public string Name { get; set; }
 
         [Required]
@@ -22,26 +23,19 @@ namespace UserUploadContactsAndMessage.Models
         public string Message { get; set; }
 
         //Added to prevent Overloadig the database with CSV files.
-        //[Required]
-        [MaxByteArray(maximumSize:1024, minimumSize: 20)]
+        [MaxByteArray(maximumSize:100000, minimumSize: 20)]
         public byte[] Contacts { get; set; }
 
+        [Display(Name = "Send Date and Time")]
         public DateTime SendDateTime { get; set; }
 
         [StringLength(maximumLength: 160, MinimumLength = 5)]
+        [Display(Name = "File Name")]
         public string FileName { get; set; }
         internal HttpPostedFileBase FileDetails { get; set; }
-        internal File File { get; set; }
-        public string ContactsString { get; set; }
-
-        //[Required, FileExtensions(Extensions = "csv", ErrorMessage = "Specify a CSV file. (Comma-separated values)")]
-        //public HttpPostedFileBase File { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            //DateTime sendDateTime = (DateTime)validationContext.Items["SendDateTime"];
-            //string message = (string)validationContext.Items["Message"];
-
             var lastUserEntry = (from u in _db.UserDetails
                                  orderby u.Id descending
                                  select u).FirstOrDefault();

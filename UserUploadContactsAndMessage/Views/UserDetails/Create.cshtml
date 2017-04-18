@@ -4,7 +4,7 @@
     ViewBag.Title = "Save";
 }
 
-<h2>Create</h2>
+<h2>Create your message here!</h2>
 
 
 @using (Html.BeginForm("Create", "UserDetails", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>UserDetail</h4>
+        <h4>Please fill out the form, all fields must be filled in order to save.</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -26,7 +26,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Message, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Message, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Message, new { htmlAttributes = new { @class = "form-control" , style = "height: 75px;"} })
                 @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -42,15 +42,15 @@
         <div class="form-group">
             @Html.LabelFor(model => model.SendDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.SendDateTime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.SendDateTime, new { htmlAttributes = new { @class = "form-control" , @readOnly = "true"} })
                 @Html.ValidationMessageFor(model => model.SendDateTime, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.Label("Contacts File", new { @class = "control-label col-md-2" })
+            @Html.Label("Contacts File Name", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="file" id="ContactsFile" name="upload" />
+                <input type="file" id="ContactsFile" name="upload" accept=".csv , .xlsx"/>
             </div>
         </div>
 

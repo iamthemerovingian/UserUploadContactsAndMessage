@@ -204,13 +204,10 @@
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\Globals.cs" />
     <Compile Include="Models\UserDetail.cs" />
-    <Compile Include="Models\UserDetailViewModel.cs" />
     <Compile Include="Models\UserUploadContactsAndMessageDb.cs" />
-    <Compile Include="Models\ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ValidationAttributes\MaxByteArrayAttribute.cs" />
-    <Compile Include="ValidationAttributes\NoDuplicatesOnSameDayAttribute.cs" />
     <Compile Include="ValidationAttributes\NoIllegalCharactersAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -249,11 +246,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\UserDetails\Create.cshtml" />
-    <Content Include="Views\UserDetails\Delete.cshtml" />
     <Content Include="Views\UserDetails\Confirm.cshtml" />
-    <Content Include="Views\UserDetails\Edit.cshtml" />
-    <Content Include="Views\UserDetails\Index.cshtml" />
-    <Content Include="Views\UserDetails\_Index.cshtml" />
     <Content Include="Views\UserDetails\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
