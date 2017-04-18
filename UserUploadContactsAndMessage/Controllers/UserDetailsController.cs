@@ -16,24 +16,38 @@ namespace UserUploadContactsAndMessage.Controllers
         private UserUploadContactsAndMessageDb _db = new UserUploadContactsAndMessageDb();
 
         // GET: UserDetails
-        public ActionResult Index()
+        public ActionResult Index(UserDetail userDetails)
         {
-            return View(_db.UserDetails.ToList());
+            var details = _db.UserDetails.Where(row => row.Name ==userDetails.Name && row.SendDateTime.Equals(userDetails.SendDateTime)).FirstOrDefault();
+
+            return View("Create", details);
         }
 
         // GET: UserDetails/Details/5
-        public ActionResult Details(int? id)
+        [HttpGet]
+        public ActionResult Confirm(UserDetail details)
         {
-            if (id == null)
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //UserDetail userDetail = _db.UserDetails.Find(id);
+            //if (userDetail == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            return View(details);
+        }
+        [HttpPost]
+        public ActionResult Confirm(UserDetail details, bool confirmed)
+        {
+            if (confirmed)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                _db.UserDetails.Add(details);
+                _db.SaveChanges();
+                return RedirectToAction("Create");
             }
-            UserDetail userDetail = _db.UserDetails.Find(id);
-            if (userDetail == null)
-            {
-                return HttpNotFound();
-            }
-            return View(userDetail);
+            return View(details);
         }
 
         // GET: UserDetails/Create
@@ -62,9 +76,7 @@ namespace UserUploadContactsAndMessage.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    _db.UserDetails.Add(userDetail);
-                    _db.SaveChanges();
-                    return RedirectToAction("Create");
+                    return RedirectToAction("Confirm", userDetail);
                 }
             }
             catch (Exception e )

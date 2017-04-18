@@ -14,5 +14,6 @@ namespace UserUploadContactsAndMessage.Models
         }
 
         public DbSet<UserDetail> UserDetails { get; set; }
+
     }
 }
