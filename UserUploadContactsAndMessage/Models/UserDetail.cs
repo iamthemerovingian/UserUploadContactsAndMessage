@@ -14,8 +14,8 @@ namespace UserUploadContactsAndMessage.Models
         [StringLength(maximumLength:160, MinimumLength = 20)]
         public string Message { get; set; }
         //Added to prevent Overloadig the database with CSV files.
-        [Required]
-        [MaxByteArray(maximumSize:1024, minimumSize: 20)]
+        //[Required]
+        //[MaxByteArray(maximumSize:1024, minimumSize: 20)]
         public byte[] Contacts { get; set; }
         public DateTime SendDateTime { get; set; }
     }

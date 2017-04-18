@@ -46,8 +46,10 @@ namespace UserUploadContactsAndMessage.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Message,Contacts,SendDateTime")] UserDetail userDetail)
+        public ActionResult Create([Bind(Include = "Id,Name,Message,Contacts")] UserDetail userDetail)
         {
+            userDetail.SendDateTime = DateTime.Now;
+
             if (ModelState.IsValid)
             {
                 db.UserDetails.Add(userDetail);
