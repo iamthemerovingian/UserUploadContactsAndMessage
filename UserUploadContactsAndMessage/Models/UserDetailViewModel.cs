@@ -17,5 +17,7 @@ namespace UserUploadContactsAndMessage.Models
 
         public DateTime SendDateTime { get; set; }
 
+        public virtual UserDetail user { get; set; }
+
     }
 }
